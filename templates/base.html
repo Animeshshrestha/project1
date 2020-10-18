@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-4.5.3.min.css' %}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" > 
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"> 
+    {% block stylesheet %}
+    {% endblock %}
+
+    <title>{% block title %}Home Page{% endblock title %}</title>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+<script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-4.5.3.min.js' %}"></script>
+{% block scripts %}
+{% endblock %}
+</html>

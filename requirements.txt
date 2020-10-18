@@ -1,0 +1,8 @@
+asgiref==3.2.10
+Django==2.2.6
+django-crispy-forms==1.9.2
+django-select2-forms==2.1.1
+django-sortedm2m==3.0.2
+djangorestframework==3.12.1
+pytz==2020.1
+sqlparse==0.4.1
