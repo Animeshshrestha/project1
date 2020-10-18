@@ -1,0 +1,7 @@
+.tr_pointer{
+    cursor: pointer;
+}
+
+.data-table__noheader thead{
+    display: none;
+}

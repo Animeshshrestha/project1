@@ -6,7 +6,8 @@
 {% endblock %}
 <title>{% block title %}Login Page{% endblock title %}</title>
 {% block content %}
-
+<div class="container">
+<p class="text-secondary"></p>
     <div id="login-row" class="row justify-content-center align-items-center">
       <div id="login-column" class="col-md-6">
           <div id="login-box" class="col-md-12">
@@ -18,15 +19,15 @@
                       here</a>
                   </p>
                   {% if messages %}
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {% for message in messages %}
-        <strong>{{ message }}</strong>
-    {% endfor %}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  {% endif %}
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                        <strong>{{ message }}</strong>
+                    {% endfor %}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  {% endif %}
                   <div class="form-group">
                       {{form.email|as_crispy_field}}
                   </div>
@@ -40,4 +41,5 @@
           </div>
       </div>
     </div>
+</div>
 {% endblock %}
