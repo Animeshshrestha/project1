@@ -5,3 +5,8 @@
 .data-table__noheader thead{
     display: none;
 }
+
+body{
+    height: 100vh;
+    background: #f4f6f9;
+}

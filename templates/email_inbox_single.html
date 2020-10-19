@@ -10,7 +10,7 @@
 <title>{% block title %}User Email{% endblock title %}</title>
 {% block content %}
 <div class="wrapper">
-  {% include '_partials\nav.html' %} {% include '_partials\sidebar.html' %}
+  {% include '_partials\nav.html' %}
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" style="min-height: 217px">
     <!-- Content Header (Page header) -->
@@ -29,7 +29,8 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12">
+          {% include '_partials\sidemenu.html' %}
+          <div class="col-md-9">
             <div class="card card-primary card-outline">
               <div class="card-header">
                 <h3 class="card-title">Read Mail</h3>
@@ -72,6 +73,4 @@
   <!-- Main Footer -->
   <div id="sidebar-overlay"></div>
 </div>
-{% endblock%} {% block scripts %}
-<script src="{% static 'js/adminlte.min.js' %}"></script>
-{% endblock %}
+{% endblock%} 
