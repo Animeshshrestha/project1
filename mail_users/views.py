@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework import viewsets, status
 
-from .models import UserEmail
+from .models import UserEmail, CustomUser
 from .forms import UserLoginForm, CustomUserForm, EmailForm
 from .custom_auth import EmailBackend
 from .serializers import EmailListSerializer
@@ -71,20 +71,39 @@ class EmailCreateView(View):
     template_name = 'email_inbox.html'
 
     def get(self, request):
-        form = EmailForm(None)
+        form = EmailForm(initial={'sender_email': request.user.email})
         return render(request, self.template_name, {'form':form})
 
     def post(self, request):
         form = EmailForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            print("oka")
+            sender = CustomUser.objects.get(email=request.user.email)
+            email = UserEmail(
+                sender=sender,
+                subject=form.cleaned_data.get('subject'),
+                message_text=form.cleaned_data.get('message_text'),
+            )
+            email.save()
+            for user_email in form.cleaned_data.get('receiver_list'):
+                user = CustomUser.objects.get(email=user_email)
+                print(user)
+                email.receiver.add(user)
+            email.save()
+            messages.success(request,"Message Sent Sucessfully")
+            return render(request, self.template_name, {'form':EmailForm(initial={'sender_email': request.user.email})})
+            
         return render(request, self.template_name,{'form':form})		
 
 class EmailList(View):
 
     def get(self, request):
 
-        email_list = UserEmail.objects.filter(sender=request.user)
+        query_params = request.GET.get('type','inbox')
+        if query_params == 'send':
+            email_list = UserEmail.objects.filter(sender=request.user).order_by('-created_at')
+        if query_params == 'inbox':
+            email_list = UserEmail.objects.filter(receiver=request.user, is_archived=False).order_by('-created_at')
+        if query_params == 'archived':
+            email_list = UserEmail.objects.filter(receiver=request.user, is_archived=True).order_by('-created_at')
         serializer = EmailListSerializer(email_list, many=True)
         return JsonResponse(serializer.data, safe=False)

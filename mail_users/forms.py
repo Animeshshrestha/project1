@@ -26,12 +26,13 @@ class UserLoginForm(forms.Form):
 	password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 class EmailForm(forms.ModelForm):
-
+	
+	sender_email = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
 	receiver_list = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 
 	class Meta:
 		model = UserEmail
-		fields = ['subject','message_text','receiver_list']
+		fields = ['subject','message_text','receiver_list','sender_email']
 
 	def clean_receiver_list(self):
 		if self.cleaned_data.get('receiver_list') is None:
