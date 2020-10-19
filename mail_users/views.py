@@ -20,6 +20,11 @@ def logout_view(request):
 	logout(request)
 	return HttpResponse("You are logged out ")
 
+
+def test(request,slug):
+    template_name = slug + '.html'
+    return render(request, template_name)
+
 class UserSignUpView(View):
 
     template_name = 'user_signup.html'
