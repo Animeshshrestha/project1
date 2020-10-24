@@ -37,7 +37,8 @@ class EmailForm(forms.ModelForm):
 	def clean_receiver_list(self):
 		if self.cleaned_data.get('receiver_list') is None:
 			raise forms.ValidationError('At least one recipient is required.')
-		receiver = [email.strip() for email in self.cleaned_data.get('receiver_list').split(",")]
+		receiver = [email.strip() for email in self.cleaned_data.get('receiver_list').split(",") if email]
+		print(receiver)
 		for email in receiver:
 			try:
 				user = CustomUser.objects.get(email=email)

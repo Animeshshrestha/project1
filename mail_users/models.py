@@ -18,3 +18,7 @@ class UserEmail(models.Model):
 
     def __str__(self):
         return self.subject
+
+    def email_subject(self):
+        return self.subject
+

@@ -1,99 +1,50 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% load crispy_forms_tags %} 
-{% block stylesheet %}
-<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}"/>
-<link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
-<link rel="stylesheet" href="{% static 'lib/fontawesome/css/all.min.css' %}" />
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
-{% endblock %}
-<title>{% block title %}User Email{% endblock title %}</title>
-{% block content %}
-<div class="wrapper">
-  {% include '_partials\nav.html' %}
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" style="min-height: 217px">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-          </div>
-          <div class="col-sm-6">
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content-header -->
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <div class="row">
-          {% include '_partials\sidemenu.html' %}
-          <div class="col-md-9">
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title">Inbox</h3>
-                <!-- /.card-tools -->
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="table-responsive mailbox-messages">
-                  <table class="table table-hover data-table data-table__noheader">
-                    <thead>
-                      <tr>
-                        <th>a</th>
-                        <th>g</th>
-                        <th>capfirst</th>
-                        <th>capfirst</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr onclick="window.location='www.google.com'" class="tr_pointer">
-                        <td class="mailbox-name">
-                          Alexander Pierce
-                        </td>
-                        <td class="mailbox-subject">
-                          <b>AdminLTE 3.0 Issue</b> - Trying to find a solution
-                          to this problem...
-                        </td>
-                        <td class="mailbox-attachment">
-                        </td>
-                        <td class="mailbox-date">15 days ago</td>
-                      </tr>
-                      <tr onclick="window.location='www.google.com'" class="tr_pointer">
-                        <td class="mailbox-name">
-                          Alexander Pierce
-                        </td>
-                        <td class="mailbox-subject">
-                          <b>AdminLTE 3.0 Issue</b> - Trying to find a solution
-                          to this problem...
-                        </td>
-                        <td class="mailbox-attachment">
-                        </td>
-                        <td class="mailbox-date">15 days ago</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <!-- /.table -->
-                </div>
-                <!-- /.mail-box-messages -->
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
+
+<div class="col-md-9">
+  
+    <div class="card-header">
+      <h3 class="card-title">{{ params }}</h3>
+      <!-- /.card-tools -->
     </div>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <!-- Control Sidebar -->
-  <!-- /.control-sidebar -->
-  <!-- Main Footer -->
-  <div id="sidebar-overlay"></div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <div class="table-responsive mailbox-messages">
+        <table class="table table-hover data-table data-table__noheader">
+          <thead>
+            <tr>
+              <th>a</th>
+              <th>g</th>
+              <th>capfirst</th>
+              <th>capfirst</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for email in emails%}
+            <tr class="tr_pointer" 
+            id={{ email.id }}
+            name={{ params }} 
+            onclick="emailDetail(this)"
+            >
+              
+              <td class="mailbox-name">
+                  {{ email.sender }}
+              </td>
+              <td class="mailbox-subject">
+                <b>{{ email.subject }}</b>
+              </td>
+              <td class="mailbox-attachment">
+              </td>
+              <td class="mailbox-date">{{ email.created_at }}</td>
+              {% empty %}
+              <b>No email till now</b>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- /.table -->
+      </div>
+      <!-- /.mail-box-messages -->
+    </div>
+    <!-- /.card-body -->
+  
+  <!-- /.card -->
 </div>
-{% endblock%}

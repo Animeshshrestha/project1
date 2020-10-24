@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework import viewsets, status
+from django.db.models import Q
+from django.core import serializers
 
 from .models import UserEmail, CustomUser
 from .forms import UserLoginForm, CustomUserForm, EmailForm
@@ -80,7 +82,9 @@ class EmailCreateView(View):
         return render(request, self.template_name, {'form':form})
 
     def post(self, request):
+
         form = EmailForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             sender = CustomUser.objects.get(email=request.user.email)
             email = UserEmail(
@@ -91,24 +95,72 @@ class EmailCreateView(View):
             email.save()
             for user_email in form.cleaned_data.get('receiver_list'):
                 user = CustomUser.objects.get(email=user_email)
-                print(user)
                 email.receiver.add(user)
             email.save()
-            messages.success(request,"Message Sent Sucessfully")
-            return render(request, self.template_name, {'form':EmailForm(initial={'sender_email': request.user.email})})
-            
-        return render(request, self.template_name,{'form':form})		
+            success_message = "Message Sent Sucesfully"
+            return JsonResponse(success_message, safe=False)
+            # messages.success(request,"Message Sent Sucessfully")
+            # return render(request, self.template_name, {'form':EmailForm(initial={'sender_email': request.user.email})})
+        return JsonResponse(form.errors.as_json(), safe=False, status=404)            
+        # return render(request, self.template_name,{'form':form})		
 
 class EmailList(View):
 
     def get(self, request):
 
-        query_params = request.GET.get('type','inbox')
-        if query_params == 'send':
+        query_params = request.GET.get('type','Inbox')
+        if query_params == 'Sent':
             email_list = UserEmail.objects.filter(sender=request.user).order_by('-created_at')
-        if query_params == 'inbox':
+        if query_params == 'Inbox':
             email_list = UserEmail.objects.filter(receiver=request.user, is_archived=False).order_by('-created_at')
-        if query_params == 'archived':
-            email_list = UserEmail.objects.filter(receiver=request.user, is_archived=True).order_by('-created_at')
-        serializer = EmailListSerializer(email_list, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        if query_params == 'Archive':
+            email_list = UserEmail.objects.filter(
+                Q(receiver=request.user)|Q(sender=request.user),  is_archived=True).order_by('-created_at')
+        context_dict = {
+            'emails':email_list,
+            'params':query_params
+        }
+        return render(request,'email_list.html',context_dict)
+        # serializer = EmailListSerializer(email_list, many=True)
+        # return JsonResponse(serializer.data, safe=False)
+
+class EmailActions(View):
+
+    def get(self, request, id):
+
+        list_of_actions = ['Sent','archived','unarchived','Inbox','Archive','read','reply']
+        action = request.GET.get('action','read')
+
+        if action not in list_of_actions:
+            action = 'read'
+        try:
+            user_email = UserEmail.objects.get(id = id)
+        except:
+            response = {"error_message":"Email not found"}
+            return JsonResponse(response, safe=False, status=404)
+        if action in ['read','Sent','Inbox','Archive']:
+            user_email.is_read = True
+            user_email.save()
+            context_dict = {
+                'email':user_email,
+                'action':action
+            }
+            return render(request, 'email_inbox_single.html',context_dict)
+        if action == 'reply':
+            email_subject = user_email.subject.split('Re:')[-1]
+            context_dict = {
+                'email':user_email,
+                'subject':email_subject
+            }
+            return render(request, 'email_compose_test.html',context_dict)
+
+        elif action == 'archived':
+            user_email.is_archived = True
+        elif action == 'unarchived':
+            user_email.is_archived = False
+        user_email.save()
+        response = {"success":True}
+        return JsonResponse(response, safe=False)
+
+
+
