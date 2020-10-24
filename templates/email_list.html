@@ -19,7 +19,12 @@
           </thead>
           <tbody>
             {% for email in emails%}
-            <tr class="tr_pointer" 
+            <tr 
+            {% if email.is_read %}
+            class="table-light"
+            {%else%}
+            class="table-dark"
+            {% endif %} 
             id={{ email.id }}
             name={{ params }} 
             onclick="emailDetail(this)"
