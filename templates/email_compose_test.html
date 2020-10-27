@@ -1,6 +1,6 @@
 
     <div class="card-header">
-    <h3 class="card-title">Reply Email</h3>
+    <h3 class="card-title">Reply Emails</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
@@ -65,7 +65,14 @@
         
             
                 <div class="">
-                    <input type="text" name="receiver_list" placeholder="Email" class="textinput textInput form-control" required id="id_receiver_list" value="{% for email_user in email.receiver.all %} {{ email_user.email }}, {% endfor %}">
+                    <input type="text" name="receiver_list" placeholder="Email" 
+                    class="textinput textInput form-control"
+                    {% if action in 'Inbox,Archive' %}
+                    value="{{ email.sender }}"
+                    {% else %}
+                    value="{% for email_user in email.receiver.all %} {{ email_user.email }}, {% endfor %}"
+                    {% endif %}
+                    required id="id_receiver_list">
                     
 
 

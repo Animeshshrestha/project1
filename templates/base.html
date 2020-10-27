@@ -57,14 +57,14 @@ async function emailArchive(detail){
     }
     
 }
-async function emailReply(email_id){
+async function emailReply(email_id, action_type){
     var div = document.getElementsByClassName("card-primary card-outline")
     div[0].remove()
     var node = document.getElementsByClassName("col-md-9")
     var new_div = document.createElement("div");
     new_div.className='card card-primary card-outline'
     document.getElementsByClassName("col-md-9")[0].appendChild(new_div)
-    var url = `http://localhost:8000/email/${email_id}?action=reply`
+    var url = `http://localhost:8000/email/${email_id}?action=reply&from=${action_type}`
     let response = await fetch(url);
     let data = await response.text();
     new_div.innerHTML += data

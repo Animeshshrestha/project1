@@ -20,7 +20,7 @@
 </div>
 <div class="card-footer">
   <div class="float-right">
-    <button type="button" id= "{{ email.id}}" onclick="emailReply(this.id)"  class="btn btn-default"><i class="fas fa-reply"></i> Reply</button>
+    <button type="button" id= "{{ email.id}}" onclick="emailReply(this.id, '{{ action}}' )"  class="btn btn-default"><i class="fas fa-reply"></i> Reply</button>
     {% if action != 'Sent'%}
     <button type="button" id= "{{ email.id}}"
     {% if email.is_archived %} name="unarchived"{% else %} name="archived"{% endif %} 

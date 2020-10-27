@@ -25,7 +25,7 @@ def logout_view(request):
 
 def test(request,slug):
     template_name = slug + '.html'
-    return render(request, template_name)
+    return redirect('user-login')
 
 class UserSignUpView(View):
 
@@ -73,9 +73,10 @@ class UserLoginView(View, EmailBackend):
         return render(request, self.template_name,{'form':form})		
 
 
-class EmailCreateView(View):
+class EmailCreateView(LoginRequiredMixin, View):
 
     template_name = 'email_inbox.html'
+    login_url = '/login/'
 
     def get(self, request):
         form = EmailForm(initial={'sender_email': request.user.email})
@@ -104,7 +105,9 @@ class EmailCreateView(View):
         return JsonResponse(form.errors.as_json(), safe=False, status=404)            
         # return render(request, self.template_name,{'form':form})		
 
-class EmailList(View):
+class EmailList(LoginRequiredMixin, View):
+
+    login_url = '/login/'
 
     def get(self, request):
 
@@ -124,7 +127,9 @@ class EmailList(View):
         # serializer = EmailListSerializer(email_list, many=True)
         # return JsonResponse(serializer.data, safe=False)
 
-class EmailActions(View):
+class EmailActions(LoginRequiredMixin, View):
+
+    login_url = '/login/'
 
     def get(self, request, id):
 
@@ -147,10 +152,12 @@ class EmailActions(View):
             }
             return render(request, 'email_inbox_single.html',context_dict)
         if action == 'reply':
+            action_type = request.GET.get('from')
             email_subject = user_email.subject.split('Re:')[-1]
             context_dict = {
                 'email':user_email,
-                'subject':email_subject
+                'subject':email_subject,
+                'action':action_type
             }
             return render(request, 'email_compose_test.html',context_dict)
 
