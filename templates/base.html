@@ -104,6 +104,27 @@ function myFunction(params) {
     };
     http_response.send();
     }
+
+var navMenuMain = document.getElementById('nav_menu_main');
+var navMenu = document.getElementById('nav_menu');
+document.addEventListener('click', function(event) {
+    var isClickInside = navMenuMain.contains(event.target);
+    if (!isClickInside) {
+        navMenu.classList.remove('show')
+    }else{
+        if(navMenu.classList.contains('show') == false){
+            navMenu.classList.add('show')
+        }
+    }
+});
+
+var navLinkMenu = document.querySelectorAll('.nav-link-menu');
+for (let i = 0; i < navLinkMenu.length; i++) {
+    navLinkMenu[i].addEventListener("click", function(e) {
+        document.querySelector('.nav-link-menu.active').classList.remove('active');
+        e.currentTarget.classList.add('active');
+    });
+}
 </script>
 {% block scripts %}
 {% endblock %}

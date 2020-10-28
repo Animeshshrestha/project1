@@ -10,3 +10,7 @@ body{
     height: 100vh;
     background: #f4f6f9;
 }
+
+.data-table{
+    cursor: pointer;
+}

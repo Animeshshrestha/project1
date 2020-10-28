@@ -1,5 +1,5 @@
 
-<div class="col-md-9">
+<div class="col-md-12">
   
     <div class="card-header">
       <h3 class="card-title">{{ params }}</h3>
@@ -21,9 +21,9 @@
             {% for email in emails%}
             <tr 
             {% if email.is_read %}
-            class="table-light"
+            class="table-secondary"
             {%else%}
-            class="table-dark"
+            class="table-light"
             {% endif %} 
             id={{ email.id }}
             name={{ params }} 
