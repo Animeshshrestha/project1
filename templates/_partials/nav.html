@@ -5,10 +5,10 @@
     <!-- Messages Dropdown Menu -->
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#">
-        Username <i class="fa fa-caret-down"></i>
+      <a class="nav-link" data-toggle="dropdown" href="#" id="nav_menu_main">
+        {{user.username}} <i class="fa fa-caret-down"></i>
       </a>
-      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="nav_menu">
         <a href="{% url 'user-logout' %}" class="dropdown-item">
           LOG OUT
         </a>
