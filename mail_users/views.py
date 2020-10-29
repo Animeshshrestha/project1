@@ -20,7 +20,7 @@ from .serializers import EmailListSerializer
 def logout_view(request):
 
 	logout(request)
-	return HttpResponse("You are logged out ")
+	return redirect('user-login')
 
 
 def test(request,slug):

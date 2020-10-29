@@ -1,6 +1,3 @@
-import select2.fields
-import select2.models
-
 from django import forms
 from .models import UserEmail, CustomUser
 from django.contrib.auth.forms import UserCreationForm

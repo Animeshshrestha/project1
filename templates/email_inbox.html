@@ -59,7 +59,7 @@ function emailSubmit() {
   formdata.append('receiver_list',obj['receiver_list'])
   formdata.append('sender_email',obj['sender_email'])
   formdata.append('subject',obj['subject'])
-  http_response.open("POST", 'http://localhost:8000/email/', true)
+  http_response.open("POST", '/email/', true)
   http_response.setRequestHeader('X-CSRFToken',obj['csrfmiddlewaretoken'])
   http_response.setRequestHeader('Accept', 'application/json'); 
   http_response.send(formdata);
